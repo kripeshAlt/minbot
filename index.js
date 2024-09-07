@@ -11,6 +11,8 @@ const botArgs = {
 };
 
 let bot;
+let retryCount = 0;
+const maxRetries = 500; // Maximum number of retries in case of disconnections
 
 // Initialize and reconnect the bot
 const initBot = () => {
@@ -21,38 +23,57 @@ const initBot = () => {
     // When the bot logs in
     bot.on('login', () => {
         console.log(`Logged in to server`);
+        retryCount = 0; // Reset retry count on successful login
     });
 
     // When the bot spawns into the world
     bot.on('spawn', () => {
         console.log("Bot spawned in the game!");
 
-        // Make the bot chat and move around randomly
+        // Make the bot move around randomly
         moveBotRandomly();
     });
 
-    // Reconnection logic if bot is disconnected
+    // Reconnection logic if the bot is disconnected
     bot.on('end', () => {
         console.log('Disconnected from server, attempting to reconnect...');
         
         // Reconnect after 10 seconds
-        setTimeout(() => {
-            initBot();
-        }, 10000);
+        if (retryCount < maxRetries) {
+            retryCount++;
+            setTimeout(() => {
+                initBot();
+            }, 10000);
+        } else {
+            console.log("Max retries reached, stopping reconnection attempts.");
+        }
     });
 
     // Error handling
     bot.on('error', (err) => {
         if (err.code === 'ECONNREFUSED') {
             console.log(`Failed to connect to ${err.address}:${err.port}`);
+        } else if (err.code === 'ECONNRESET') {
+            console.log('Connection was reset by the server. Retrying...');
+            if (retryCount < maxRetries) {
+                retryCount++;
+                setTimeout(() => {
+                    initBot();
+                }, 10000);
+            } else {
+                console.log("Max retries reached, stopping reconnection attempts.");
+            }
         } else {
             console.log(`Unhandled error: ${err}`);
         }
-        
+
         // Retry connecting after 10 seconds
-        setTimeout(() => {
-            initBot();
-        }, 10000);
+        if (retryCount < maxRetries) {
+            retryCount++;
+            setTimeout(() => {
+                initBot();
+            }, 10000);
+        }
     });
 };
 
