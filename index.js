@@ -3,7 +3,7 @@ const { pathfinder, Movements, goals: { GoalBlock } } = require('mineflayer-path
 
 const botArgs = {
     host: 'KRIPESH007.aternos.me',
-    port: '12345',
+    port: '29015',
     username: "Hello_world",
     version: '1.8.9'
 };
