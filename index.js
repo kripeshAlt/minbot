@@ -5,7 +5,7 @@ const botArgs = {
     host: 'KRIPESH007.aternos.me',
     port: '29015',
     username: "Hello_world",
-    version: '1.8.9'
+    version: '1.20.1'
 };
 
 const initBot = () => {
