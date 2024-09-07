@@ -1,7 +1,7 @@
 {
   "name": "mineflayer-bot",
   "version": "1.0.0",
-  "description": "A Minecraft bot built with Mineflayer",
+  "description": "A Minecraft bot built with Mineflayer and Pathfinder",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -9,6 +9,9 @@
   "dependencies": {
     "mineflayer": "^4.20.1",
     "mineflayer-pathfinder": "^2.4.5",
-    "minecraft-data": "^3.22.0"
+    "minecraft-data": "^3.2.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
